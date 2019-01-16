@@ -2,7 +2,7 @@ import React from "react";
 
 const Item = props => {
   return (
-    <div className="itemDrag" id={props.id} draggable="true">
+    <div className="itemDrag" draggable="true">
       Drag me
     </div>
   );

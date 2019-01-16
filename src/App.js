@@ -6,117 +6,121 @@ import Target from "./components/target/Target";
 class App extends Component {
   state = {
     targets: [],
-    countOfColumnsAndRows: 10,
+    countOfColumnsAndRows: 5,
   };
-
-  // array = [{color: red}, {color: blue}, {color: green}]
-
-  // getBla(el){
-  //   let index = array.findIndex(el)
-  //   array[index].color = black
-  //   array.push({color: perrple })
-  //   array.unshift({color: grey})
-  // }
-
-  // array.map((el, index)=>{
-  //   if(index of every row)
-  // })
-
-  // map ( el => getBla(el))
 
   componentDidMount() {
     let startTargets = [];
-    for (let i = 0; i < Math.pow(this.state.countOfColumnsAndRows, 2); i++) {
-      startTargets.push({ id: i, color: "white" });
+    for (let i = 0; i < this.state.countOfColumnsAndRows; i++) {
+      startTargets.push([]);
+      for (let j = 0; j < this.state.countOfColumnsAndRows; j++) {
+        startTargets[i].push(0);
+      }
     }
     this.setState({ targets: startTargets });
   }
 
-  setCountOfGridRowsAndColumns(count) {
-    let countOfColumnsAndRows = "";
-    for (let i = 0; i < count; i++) {
-      countOfColumnsAndRows += count + "fr ";
-    }
-    return countOfColumnsAndRows;
-  }
-
-  setNewTargets(id) {
-    if (id < 0) {
-      console.log("target is not exist");
-    } else if (id > Math.pow(this.state.countOfColumnsAndRows, 2) - 1) {
-      // изменения тут чтобы изменялись индексы цветов, но сохранялся вид
-      const newTargets = this.state.targets;
-      for (let i = 0; i < this.state.countOfColumnsAndRows * 2 + 1; i++) {
-        newTargets.push({
-          id: Math.pow(this.state.countOfColumnsAndRows, 2) + i,
-          color: "white",
-        });
-      }
-      this.setState({ targets: newTargets });
-    } else {
-      const newTargets = this.state.targets.map(target =>
-        target.id === id ? { ...target, color: "lightgreen" } : target,
-      );
-      this.setState({ targets: newTargets });
-    }
-  }
-
-  checkTargetIsEmpty(id) {
-    if (id < 0) {
-      console.log("target is not exist");
+  checkTargetIsExist(newTargets, row, column) {
+    if (column < 0 || row < 0) {
+      console.log("Target is not exist");
       return false;
-    } else if (id > Math.pow(this.state.countOfColumnsAndRows, 2) - 1) {
-      this.setState({ countOfColumnsAndRows: this.state.countOfColumnsAndRows + 1 });
+    } else if (row > this.state.countOfColumnsAndRows - 1) {
+      // -1 т.к. нач. и все послед массив у нас 0 1 2 3 4 - колонок
+      //добавляем колонку путём добавляения каждому из масиивов еще одного значение
+      console.log("add new row");
+      let newRow = [];
+      for (let i = 0; i < this.state.countOfColumnsAndRows; i++) {
+        newRow.push(0); // заполняем новую строку нулями
+      }
+      console.log(newRow);
+      newTargets.push(newRow); // добавляем новую строку
+      return true;
+    } else if (column > this.state.countOfColumnsAndRows - 1) {
+      // -1 т.к. нач. и все послед массив у нас 0 1 2 3 4 - строк
+      //добавляем строку путём добавляения еще одного массива той же размерности
+      console.log("add new column");
+      console.log("Before: " + newTargets);
+      for (let i = 0; i < this.state.countOfColumnsAndRows; i++) {
+        newTargets[i].push(0);
+      }
+      console.log("After: " + newTargets);
       return true;
     } else {
-      if (this.state.targets[id].color === "white") {
-        return true;
-      }
+      return true;
     }
   }
 
-  handleClick = id => {
-    // this.setState.targets[id]({ color: "lightgreen" }); - нельзя
-    console.log(id);
-    if (this.checkTargetIsEmpty(id)) {
-      this.setNewTargets(id);
-    } else if (this.checkTargetIsEmpty(id - this.state.countOfColumnsAndRows)) {
-      this.setNewTargets(id - this.state.countOfColumnsAndRows);
-    } else if (this.checkTargetIsEmpty(id + 1)) {
-      this.setNewTargets(id + 1);
-    } else if (this.checkTargetIsEmpty(id + this.state.countOfColumnsAndRows)) {
-      this.setNewTargets(id + this.state.countOfColumnsAndRows);
-    } else if (this.checkTargetIsEmpty(id - 1)) {
-      this.setNewTargets(id - 1);
+  handleClick = (row, column) => {
+    var newTargets = this.state.targets;
+    if (!newTargets[row][column]) {
+      newTargets[row][column] = 1;
+      this.setState({ targets: newTargets });
+    } else if (this.checkTargetIsExist(newTargets, row - 1, column)) {
+      if (!newTargets[row - 1][column]) {
+        console.log("1");
+        newTargets[row - 1][column] = 1;
+        this.setState({ targets: newTargets });
+        return;
+      } else if (this.checkTargetIsExist(newTargets, row, column + 1)) {
+        if (!newTargets[row][column + 1]) {
+          console.log("2");
+          newTargets[row][column + 1] = 1;
+          this.setState({ targets: newTargets });
+          return;
+        } else if (this.checkTargetIsExist(newTargets, row + 1, column)) {
+          if (!newTargets[row + 1][column]) {
+            console.log("3");
+            newTargets[row + 1][column] = 1;
+            this.setState({ targets: newTargets });
+            return;
+          } else if (this.checkTargetIsExist(newTargets, row, column - 1)) {
+            if (!newTargets[row][column - 1]) {
+              console.log("4");
+              newTargets[row][column - 1] = 1;
+              this.setState({ targets: newTargets });
+              return;
+            }
+          }
+        }
+      }
     }
   };
 
+  // else if (newTargets[row][column] === 1) {
+  //   console.log("Target is busy");
+  //   return false;
+  // }
+
+  // else {
+  //   newTargets[row][column] = 1;
+  //   this.setState({ targets: newTargets });
+  // }
+
   render() {
-    const { targets, countOfColumnsAndRows } = this.state;
+    const { targets } = this.state;
     return (
       <div className="App">
         <div className="wrapper">
           <div className="itemContainer">
             <Item />
           </div>
-          <header>Drag'n'Drop App</header>
-          <div
-            className="targetGrid"
-            style={{
-              gridTemplateColumns: this.setCountOfGridRowsAndColumns(countOfColumnsAndRows),
-              gridTemplateRows: this.setCountOfGridRowsAndColumns(countOfColumnsAndRows),
-            }}
-          >
-            {targets.map(singleTarget => {
-              return (
-                <Target
-                  key={singleTarget.id}
-                  idTarget={singleTarget.id}
-                  color={singleTarget.color}
-                  handleClick={this.handleClick}
-                />
-              );
-            })}
+          <div className="mainWrapper">
+            <header>Drag'n'Drop App</header>
+            <div className="targetGrid">
+              {targets.map((singleArrayTargets, i) => {
+                return singleArrayTargets.map((singleItem, j) => {
+                  return (
+                    <Target
+                      key={i + "" + j}
+                      idRow={i}
+                      idColumn={j}
+                      isEmpty={singleItem}
+                      handleClick={this.handleClick}
+                    />
+                  );
+                });
+              })}
+            </div>
           </div>
         </div>
       </div>

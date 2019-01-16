@@ -5,35 +5,42 @@
 body
     margin 0
     position relative
+    overflow hidden
     .App
         .wrapper
-            display: grid
-            grid-template-columns: 20% 80%
-            grid-template-rows: 7% 93%
+            width: 100vw
+            height: 100vh
             .itemContainer
-                display: flex
-                justify-content: center
-                align-items: center
-                height: 99vh
-                border: 4px solid black
-            header
+                height 100vh
+                width 200px
+                border: 3px solid black
+                position: fixed
                 display: flex
                 justify-content: center 
                 align-items: center
-                background-color: navy
-                border-bottom: 4px solid #429bf4
-                margin 0 
-                font-family: 'Roboto'
-                font-size: 16px
-                font-weight: 800
-                font-style: normal
-                font-stretch: normal
-                letter-spacing: normal
-                text-align: left
-                color: white
-                height 50px
-            .targetGrid
-                grid-column: 2
-                display: grid
-                // grid-template-columns: repeat(5, 5fr)
-                // grid-template-rows: repeat(5, 5fr)
+            .mainWrapper
+                margin-left: 206px
+                height 100vh
+                width: calc(100% - 199px)
+                overflow: auto
+                header
+                    display: flex
+                    justify-content: center 
+                    align-items: center
+                    width: 100%
+                    height 50px
+                    position fixed
+                    background-color: navy 
+                    box-sizing: border-box
+                    border-bottom: 4px solid #429bf4
+                    font-family: 'Roboto'
+                    font-weight: 800
+                    font-style: normal
+                    font-stretch: normal
+                    letter-spacing: normal
+                    text-align: left
+                    color: white
+                .targetGrid
+                    margin-top: 50px
+                    width: 100%
+                    height: 100%

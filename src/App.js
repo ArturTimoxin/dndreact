@@ -1,11 +1,14 @@
 import React, { Component } from "react";
 import "./style/style.css";
+import HTML5Backend from "react-dnd-html5-backend";
+import { DragDropContext } from "react-dnd";
 import Item from "./components/item/Item";
 import Target from "./components/target/Target";
 
 class App extends Component {
   state = {
     targets: [],
+    itemText: "Drag me",
   };
 
   componentDidMount() {
@@ -25,7 +28,6 @@ class App extends Component {
       console.log("Target is not exist");
       return false;
     } else if (row > this.state.targets.length - 1 || column > this.state.targets[0].length - 1) {
-      console.log("add new rows and columns");
       let newRow = [];
       for (let i = 0; i < this.state.targets[0].length; i++) {
         newRow.push(0);
@@ -40,7 +42,7 @@ class App extends Component {
     }
   }
 
-  handleClick = (row, column) => {
+  handleDrop = (row, column) => {
     var newTargets = this.state.targets;
     if (!newTargets[row][column]) {
       newTargets[row][column] = 1;
@@ -72,30 +74,26 @@ class App extends Component {
     }
   };
 
-  // else if (newTargets[row][column] === 1) {
-  //   console.log("Target is busy");
-  //   return false;
-  // }
-
-  // else {
-  //   newTargets[row][column] = 1;
-  //   this.setState({ targets: newTargets });
-  // }
+  changeItemText = itemText => {
+    this.setState({
+      itemText: itemText,
+    });
+  };
 
   render() {
-    const { targets } = this.state;
+    const { targets, itemText } = this.state;
     return (
       <div className="App">
         <div className="wrapper">
           <div className="itemContainer">
-            <Item />
+            <Item itemText={itemText} changeItemText={this.changeItemText} />
           </div>
           <div className="mainWrapper">
             <header>Drag'n'Drop App</header>
             <div className="targetGrid">
               {targets.map((singleArrayTargets, i) => {
                 return (
-                  <div className="targetRow" id={i}>
+                  <div className="targetRow" key={i} id={i}>
                     {singleArrayTargets.map((singleItem, j) => {
                       return (
                         <Target
@@ -103,7 +101,7 @@ class App extends Component {
                           idRow={i}
                           idColumn={j}
                           isEmpty={singleItem}
-                          handleClick={this.handleClick}
+                          handleDrop={this.handleDrop}
                         />
                       );
                     })}
@@ -118,4 +116,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default DragDropContext(HTML5Backend)(App);

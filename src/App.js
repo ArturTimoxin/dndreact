@@ -24,28 +24,16 @@ class App extends Component {
     if (column < 0 || row < 0) {
       console.log("Target is not exist");
       return false;
-    } else if (row > this.state.targets.length - 1) {
-      // -1 т.к. нач. и все послед массив у нас 0 1 2 3 4 - колонок
-      //добавляем колонку путём добавляения каждому из масиивов еще одного значение
-      console.log("add new row");
+    } else if (row > this.state.targets.length - 1 || column > this.state.targets[0].length - 1) {
+      console.log("add new rows and columns");
       let newRow = [];
       for (let i = 0; i < this.state.targets[0].length; i++) {
-        newRow.push(0); // заполняем новую строку нулями
+        newRow.push(0);
       }
-      console.log(newRow);
-      newTargets.push(newRow); // добавляем новую строку
-      return true;
-    } else if (column > this.state.targets[0].length - 1) {
-      // -1 т.к. нач. и все послед массив у нас 0 1 2 3 4 - строк
-      //добавляем строку путём добавляния еще одного массива той же размерности
-      let tmpNewTargets = newTargets;
-      for (let i = 0; i < this.state.targets[0].length; i++) {
-        tmpNewTargets.push([]);
+      newTargets.push(newRow);
+      for (let i = 0; i < this.state.targets.length; i++) {
+        newTargets[i].push(0);
       }
-      for (let i = 0; i < this.state.targets[0].length; i++) {
-        tmpNewTargets[i].push(0);
-      }
-      newTargets = tmpNewTargets;
       return true;
     } else {
       return true;

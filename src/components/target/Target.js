@@ -6,7 +6,7 @@ const Target = props => {
   return (
     <div
       className="target"
-      id={props.idColumn + "" + props.idRow}
+      id={props.idRow + "" + props.idColumn}
       onClick={handleClick}
       style={{ background: colorTarget }}
     />

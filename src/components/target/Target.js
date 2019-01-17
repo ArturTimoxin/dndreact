@@ -8,10 +8,9 @@ const targetSource = {
 };
 
 function collect(connect, monitor) {
-  // обязательно для обертки библиотеки
   return {
     connectDropTarget: connect.dropTarget(),
-    hovered: monitor.isOver(), // Вызывается, когда элемент находится над компонентом.
+    hovered: monitor.isOver(),
     item: monitor.getItem(),
   };
 }

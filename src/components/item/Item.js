@@ -2,10 +2,9 @@ import React, { Component } from "react";
 import { DragSource } from "react-dnd";
 
 const itemSource = {
-  // обязательный объект для обертки
   beginDrag(props) {
     props.changeItemText("Drop off me");
-    return {}; // функция должна возвращать объект
+    return {};
   },
   endDrag(props, monitor) {
     props.changeItemText("Drag me");
@@ -14,9 +13,9 @@ const itemSource = {
 
 function collect(connect, monitor) {
   return {
-    connectDragSource: connect.dragSource(), // dragSource возвр фцию которая передаётся компотненту чтобы подкл DOM элм к библ React DnD
-    connectDragPrewiew: connect.dragPreview(), // предварительный просмотр при перетаскивании элемента DOM (при перетаскивании эл-т будет "заскриншотен" т.е перетаскивание эл-та мышью)
-    isDragging: monitor.isDragging(), // возвр true если выполниться перетаскивание
+    connectDragSource: connect.dragSource(),
+    connectDragPrewiew: connect.dragPreview(),
+    isDragging: monitor.isDragging(),
   };
 }
 

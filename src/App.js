@@ -47,6 +47,12 @@ class App extends Component {
     if (!newTargets[row][column]) {
       newTargets[row][column] = 1;
       this.setState({ targets: newTargets });
+    } else if (row === 0 && this.checkTargetIsExist(newTargets, row, column + 1)) {
+      if (!newTargets[row][column + 1]) {
+        newTargets[row][column + 1] = 1;
+        this.setState({ targets: newTargets });
+        return;
+      }
     } else if (this.checkTargetIsExist(newTargets, row - 1, column)) {
       if (!newTargets[row - 1][column]) {
         newTargets[row - 1][column] = 1;

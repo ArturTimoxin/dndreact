@@ -89,14 +89,16 @@ class App extends Component {
     }
   };
 
-  changeItemText = itemText => {
+  changeItemText = (itemText, itemVisibility) => {
     this.setState({
       itemText: itemText,
+      itemVisibility: itemVisibility,
     });
   };
 
   render() {
     const { targets, itemText } = this.state;
+
     return (
       <div className="App">
         <div className="wrapper">

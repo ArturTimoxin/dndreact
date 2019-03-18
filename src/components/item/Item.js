@@ -4,6 +4,11 @@ import { DragSource } from "react-dnd";
 const itemSource = {
   beginDrag(props) {
     props.changeItemText("Drop off me");
+
+    // const item = document.getElementsByClassName("itemDrag");
+
+    // console.log(item);
+    // setTimeout(() => (item.className = "invisible"), 0);
     return {};
   },
   endDrag(props, monitor) {
